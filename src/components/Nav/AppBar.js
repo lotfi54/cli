@@ -7,40 +7,91 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import LocalMallRoundedIcon from '@material-ui/icons/LocalMallRounded';
+import { useDispatch, useSelector } from "react-redux";
+import { withStyles } from '@material-ui/core/styles';
+import Badge from '@material-ui/core/Badge';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import Link from '@material-ui/core/Link';
+
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 3,
   },
   menuButton: {
     marginRight: theme.spacing(2),
+    color:'#000'
   },
+  log: {
+    
+    color:'#000'
+  },
+
   title: {
-    flexGrow: 1,
+    flexGrow: 2,
+    color:'#000'
   },
   AppBar:{
-    background: '#ffffff',
-    boxShadow: '0 3px 5px 2px ',
-  }
+    background: '#fff',
+    // boxShadow: '5px 3px 5px 10px',
+    // boxShadow: rgba(0, 0, 0, 0.1) 
+    // boxShadow: '0 3px 5px 2px rgba(33, 203, 243, .3)'
+    // boxShadow: 'rgba(0, 0, 0, 0.05) 0px 0px 0px 1px'
+    boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px'
+  },
+  link: {
+    color: "#000",
+    "&:hover": {
+     
+        textDecoration: "none"
+    }
+  },
+
 }));
+
+const defaultProps = {
+  color: 'secondary',
+  children:   <LocalMallRoundedIcon />,
+};
+
+const StyledBadge = withStyles((theme) => ({
+  badge: {
+  
+    
+    padding: '0 0px',
+    fontSize:2
+  },
+}))(Badge);
 
 
 export default function ButtonAppBar() {
+  const cartstate = useSelector((state) => state.cartReducer);
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <AppBar className={classes.AppBar}  position="static">
+      <AppBar className={classes.AppBar}  position="fixed">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="primary" aria-label="menu">
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" color="primary" className={classes.title}>
+            <Link href="/" className={classes.link}>
             Delivro Pizza
+            </Link>
           </Typography>
-          <Button color="primary">Login</Button>
-        
-          <IconButton color="primary" aria-label="add to shopping cart">
-         <LocalMallRoundedIcon />
-        </IconButton>
+          <Button className={classes.log} color="primary">Login</Button>
+
+
+          <Link className={classes.link} href="/cart">
+          <IconButton  aria-label="cart">
+          <Badge color="secondary" badgeContent={cartstate.cartItems.length} >
+        <LocalMallRoundedIcon  className={classes.panier} />
+      </Badge>
+
+   
+
+      
+    </IconButton>
+    </Link>
         </Toolbar>
       </AppBar>
     </div>
