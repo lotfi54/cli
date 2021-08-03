@@ -14,8 +14,6 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import Link from "@material-ui/core/Link";
 import { logoutUser } from "../../actions/userActions";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,15 +65,6 @@ export default function ButtonAppBar() {
   const userstate = useSelector((state) => state.loginUserReducer);
   const { currentUser } = userstate;
  const dispatch = useDispatch()
- const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   return (
     <div className={classes.root}>
       <AppBar className={classes.AppBar} position="fixed">
@@ -101,28 +90,13 @@ export default function ButtonAppBar() {
 
           {currentUser ? (
             <div>
-             <Button onClick={handleClick} className={classes.log} color="primary">
+             <Button className={classes.log} color="primary">
             <Typography  color="primary" className={classes.link}>
               
                 {currentUser.name}
               
             </Typography>
             </Button>
-              <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>
-         <Link href="/orders" className={classes.link}>
-                Commandes
-              </Link>
-        </MenuItem>
-      
-      </Menu>
            
             <IconButton className={classes.log} color="primary">
             
@@ -137,20 +111,11 @@ export default function ButtonAppBar() {
           
 
           ) : (
-              <MenuItem>
-                <Button  color="primary">
-              <Link href="/register" className={classes.link}>
-                Inscritpion
-              </Link>
-            </Button>
-           
             <Button className={classes.log} color="primary">
               <Link href="/login" className={classes.link}>
-                Connexion
+                Login
               </Link>
             </Button>
-            </MenuItem>
-            
           )}
 
           <Link className={classes.link} href="/cart">

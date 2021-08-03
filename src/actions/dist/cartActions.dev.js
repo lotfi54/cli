@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.addToCart = void 0;
+exports.deleteFromCart = exports.addToCart = void 0;
 
 var addToCart = function addToCart(pizza, quantity, varient) {
   return function _callee(dispatch, getState) {
@@ -14,17 +14,30 @@ var addToCart = function addToCart(pizza, quantity, varient) {
           case 0:
             cartItem = {
               name: pizza.name,
-              _id: pizza._id,
+              id: pizza.id,
               image: pizza.image,
               varient: varient,
-              quantity: quantity,
+              quantity: Number(quantity),
               prices: pizza.prices,
               price: pizza.prices[0][varient] * quantity
             };
-            dispatch({
-              type: 'ADD_TO_CART',
-              payload: cartItem
-            });
+
+            if (cartItem.quantity > 10) {
+              alert('Vous ne pouvez pas ajouté plus de 10 pizza'); //   <SnackbarContent message="I love snacks."  />
+            } else {
+              if (cartItem.quantity < 1) {
+                dispatch({
+                  type: 'DELETE_FROM_CART',
+                  payload: pizza
+                });
+              } else {
+                dispatch({
+                  type: 'ADD_TO_CART',
+                  payload: cartItem
+                });
+              }
+            }
+
             cartItems = getState().cartReducer.cartItems;
             localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
@@ -38,3 +51,16 @@ var addToCart = function addToCart(pizza, quantity, varient) {
 };
 
 exports.addToCart = addToCart;
+
+var deleteFromCart = function deleteFromCart(pizza) {
+  return function (dispatch, getState) {
+    dispatch({
+      type: 'DELETE_FROM_CART',
+      payload: pizza
+    });
+    var cartItems = getState().cartReducer.cartItems;
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  };
+};
+
+exports.deleteFromCart = deleteFromCart;
